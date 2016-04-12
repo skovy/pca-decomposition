@@ -3,9 +3,10 @@ from plotly.tools import FigureFactory
 from plotly.graph_objs import Scatter, Layout
 import numpy as np
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import normalize
 from src.track_data import TrackData
 
-td = TrackData().retrieve_data(460)
+td = TrackData().retrieve_data(2000)
 data = []
 for i, sample in enumerate(td):
     data.append([])
@@ -14,7 +15,7 @@ for i, sample in enumerate(td):
         if col != None:
             data[i][j] = float(col)
 
-X = np.array(data)
+X = normalize(np.array(data), norm = 'l1', axis = 1)
 pca = PCA(n_components=2)
 X_r = pca.fit_transform(X)
 print(X_r)
